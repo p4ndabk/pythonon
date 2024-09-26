@@ -1,8 +1,7 @@
 import sys
 from dotenv import load_dotenv
 import time
-import gemini
-import os
+import app.integration.gemini as gemini
 
 def to_write(text, delay=0.04):    
     for char in text:
