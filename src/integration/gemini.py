@@ -2,13 +2,13 @@ import google.generativeai as genai
 import os
 
 def question(question):
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-    
-    model = genai.GenerativeModel('gemini-pro')
-
-    response = model.generate_content(question)
-
-    return response.text
+    try :
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(question)
+        return response.text
+    except Exception as e:
+        return str(e)
 
 def questionStrem():
     genai.configure(api_key="sua-api-key")

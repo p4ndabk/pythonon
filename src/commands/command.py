@@ -24,10 +24,12 @@ def personal():
     to_write(response)
     return response
 
+def save():
+    to_write(excalidraw.save())
+
 def start():
     if len(sys.argv) > 1:
         command = sys.argv[1]
-        #abstrair para uma função
         if command == "personal":
             personal()
         if command == "generic":
@@ -36,7 +38,7 @@ def start():
             response = gemini.question(question)
             return to_write(response)
         if command == "save":
-            return to_write(excalidraw.save())
+            save()
 
         else:
             to_write("precisa de ajuda?")
