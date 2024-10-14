@@ -1,6 +1,8 @@
 import sys
 from dotenv import load_dotenv
+import os
 import time
+import subprocess
 import src.integration.gemini as gemini
 import src.software.excalidraw as excalidraw
 
@@ -24,6 +26,48 @@ def personal():
     to_write(response)
     return response
 
+def fender():
+    try:
+        directory = os.getenv('FENDER_DIRECTORY') + '/.docker'
+        os.chdir(directory)
+                
+        subprocess.run(['docker-compose', '-f', 'docker-compose-arm.yaml', 'up', '-d'], check=True, text=True)
+        to_write("Docker executado com sucesso!")
+    except FileNotFoundError as fnf_error:
+        to_write(f"Diretório não encontrado: {fnf_error}")
+    except subprocess.CalledProcessError as e:
+        to_write(f"Ocorreu um erro ao executar o comando: {e}")
+
+def ibanez():
+    try:
+        directory = os.getenv('IBANEZ_DIRECTORY') + '/.docker'
+        os.chdir(directory)
+                
+        subprocess.run(['docker-compose', '-f', 'docker-compose-arm.yaml', 'up', '-d'], check=True, text=True)
+        to_write("Docker executado com sucesso!")
+    except FileNotFoundError as fnf_error:
+        to_write(f"Diretório não encontrado: {fnf_error}")
+    except subprocess.CalledProcessError as e:
+        to_write(f"Ocorreu um erro ao executar o comando: {e}")
+
+def ibanez_open():
+    directory = os.getenv('IBANEZ_DIRECTORY')
+    os.chdir(directory)
+            
+    subprocess.run(['code', '.'], check=True, text=True)
+
+def fender_open():
+    directory = os.getenv('FENDER_DIRECTORY')
+    os.chdir(directory)
+            
+    subprocess.run(['code', '.'], check=True, text=True)
+
+def pandabk_open():
+    directory = os.getenv('PANDABK_DIRECTORY')
+    os.chdir(directory)
+            
+    subprocess.run(['code', '.'], check=True, text=True)
+
 def save():
     to_write(excalidraw.save())
 
@@ -37,9 +81,24 @@ def start():
             question = question
             response = gemini.question(question)
             return to_write(response)
+        if command == "open":
+            pandabk_open()
+            return
+        if command == "fender:up":
+            fender()
+            return
+        if command == "fender:open":
+            fender_open()
+            return
+        if command == "ibanez:up":
+            ibanez()
+            return
+        if command == "ibanez:open":
+            ibanez_open()
+            return
         if command == "save":
             save()
-
+            return
         else:
             to_write("precisa de ajuda?")
     else:
